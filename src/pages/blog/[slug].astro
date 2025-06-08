@@ -1,0 +1,147 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { format } from 'date-fns';
+import { marked } from 'marked';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  
+  // Sort posts by publication date (newest first)
+  const sortedPosts = [...posts].sort((a, b) => 
+    a.data.pubDate.getTime() - b.data.pubDate.getTime()
+  );
+
+  return sortedPosts.map((post, index) => ({
+    params: { 
+      slug: post.slug
+    },
+    props: {
+      post,
+      prevPost: index > 0 ? {
+        title: sortedPosts[index - 1].data.title,
+        slug: sortedPosts[index - 1].slug
+      } : null,
+      nextPost: index < sortedPosts.length - 1 ? {
+        title: sortedPosts[index + 1].data.title,
+        slug: sortedPosts[index + 1].slug
+      } : null
+    }
+  }));
+}
+
+const { post, prevPost, nextPost } = Astro.props;
+const { Content } = await post.render();
+
+// Extract headers from content for table of contents
+const headers = [];
+const lines = post.body.split('\n');
+for (const line of lines) {
+  if (line.startsWith('## ')) {
+    const text = line.replace('## ', '');
+    const id = text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+    headers.push({ text, id });
+  }
+}
+---
+
+<Layout title={post.data.title}>
+  <article class="max-w-3xl mx-auto px-4 py-12">
+    <div class="mb-12">
+      <a href="/" class="inline-flex items-center text-gray-600 hover:text-gray-900">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Home
+      </a>
+    </div>
+    <header class="mb-16">
+      <h1 class="text-4xl font-semibold mb-4">{post.data.title}</h1>
+      <div class="flex items-center text-gray-600 mb-8">
+        <span>{post.data.author}</span>
+        <span class="mx-2">·</span>
+        <time datetime={post.data.pubDate.toISOString()}>{format(post.data.pubDate, 'MMM d, yyyy')}</time>
+      </div>
+
+      {post.data.showToc && headers.length > 0 && (
+        <div class="bg-gray-50 rounded-lg p-6 mb-8">
+          <h2 class="text-lg font-semibold mb-2">Table of Contents</h2>
+          <nav>
+            <ul class="space-y-2">
+              {headers.map(header => (
+                <li>
+                  <a 
+                    href={`#${header.id}`}
+                    class="text-gray-600 hover:text-gray-900 hover:underline inline-flex items-center group"
+                  >
+                    <span class="opacity-0 group-hover:opacity-100 mr-2 text-gray-400">→</span>
+                    {header.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      )}
+    </header>
+    <div class="prose max-w-none">
+      <Content />
+    </div>
+    
+    <div class="flex justify-end mt-12">
+      <img 
+        src="https://res.cloudinary.com/dwt45tvzy/image/upload/v1740536676/fake-signature_bgpa4o.jpg"
+        alt="Adam Bossy-Mendoza's signature" 
+        class="w-64 opacity-70"
+      />
+    </div>
+    
+    <nav class="mt-12 border-t">
+      <div class="pt-4">
+      <div class="flex justify-between items-center">
+        {prevPost && (
+          <a href={`/blog/${prevPost.slug}`} class="group flex items-center text-gray-600 hover:text-gray-900">
+            <svg class="w-5 h-5 mr-2 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            <div>
+              <div class="text-sm text-gray-500">Previous</div>
+              <div class="font-medium">{prevPost.title}</div>
+            </div>
+          </a>
+        )}
+        
+        {nextPost && (
+          <a href={`/blog/${nextPost.slug}`} class="group flex items-center text-right text-gray-600 hover:text-gray-900 ml-auto">
+            <div>
+              <div class="text-sm text-gray-500">Next</div>
+              <div class="font-medium">{nextPost.title}</div>
+            </div>
+            <svg class="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        )}
+      </div>
+      </div>
+    </nav>
+  </article>
+</Layout>
+
+<style>
+  /* Add styles for the horizontal rule above headers in the blog content */
+  :global(.prose h3) {
+    position: relative;
+    padding-top: 1.25em;
+  }
+  
+  :global(.prose h3::before) {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #e5e7eb;
+  }
+</style>
