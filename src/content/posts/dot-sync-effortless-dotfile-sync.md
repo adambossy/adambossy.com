@@ -1,5 +1,5 @@
 ---
-title: "dot-sync: Effortless Bidirectional Sync for Your Dotfiles"
+title: "dot-sync: Effortless Bidirectional Sync for Your dotfiles"
 description: "A lightweight bash utility that keeps your dotfiles mirrored across machines with GitHub as the source of truth."
 pubDate: 2025-11-12
 author: "Adam Bossy-Mendoza"
