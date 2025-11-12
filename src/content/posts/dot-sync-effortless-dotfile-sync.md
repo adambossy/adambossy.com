@@ -9,7 +9,7 @@ emoji: "🌀"
 
 I’ve wanted to build this tiny utility for over 15 years, but it never felt worth the effort until now.
 
-Like most developers, I’ve got a handful of dotfiles (my `.bashrc`, `.vimrc`, and friends) that evolve naturally and somewhat chaotically as I try new tools and iterate on my setup. Over time, they grow annoying to track and they fall out of sync across machines. Inevitably, they break or I have to start over when I get a new machine.
+Like most developers, I’ve got a handful of dotfiles (my <code>.bashrc</code>, <code>.vimrc</code>, and friends) that evolve naturally and somewhat chaotically as I try new tools and iterate on my setup. Over time, they grow annoying to track and they fall out of sync across machines. Inevitably, they break or I have to start over when I get a new machine.
 
 I finally built **dot-sync**, a tiny bash utility that keeps my development environments tidy and consistent. Plot twist: it was written perfectly by AI.
 
