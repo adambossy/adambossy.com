@@ -49,6 +49,23 @@ export default {
             ul: {
               marginTop: '1.5em',
               marginBottom: '1.5em'
+            },
+            code: {
+              fontFamily: 'Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+              backgroundColor: '#f3f4f6',
+              color: '#1f2937',
+              borderRadius: '0.375rem',
+              padding: '0.125rem 0.375rem',
+              fontWeight: '500'
+            },
+            'code::before': {
+              content: '""'
+            },
+            'code::after': {
+              content: '""'
+            },
+            'a code': {
+              color: 'inherit'
             }
           },
         },
