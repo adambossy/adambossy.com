@@ -11,7 +11,7 @@ After 2+ years of AI engineering, my prompts consistently end up in utter chaos;
 
 [Promptorium](https://github.com/adambossy/promptorium-python) solves this. It versions, stores, and organizes your prompts as you iterate, independent of Git, so prompt changes don’t disappear into commit noise. It helps your prompts evolve in a transparent, intentional way, making them easy to reference and improve for evals, A/B tests and other analytics.
 
-### Why it matters
+### What it offers
 
 * **Reproducibility**: Know *exactly* which prompt version generated which output.
 * **Explicit, reliable history**: Refine prompts without losing the evolution.
