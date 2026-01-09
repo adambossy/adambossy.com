@@ -55,7 +55,7 @@ for (const line of lines) {
         Back to Home
       </a>
     </div>
-    <header class="mb-16">
+    <header class={post.data.headerImage ? '' : 'mb-16'}>
       <h1 class="text-4xl font-semibold mb-4">{post.data.title}</h1>
       <div class="flex items-center text-gray-600 mb-8">
         <span>{post.data.author}</span>
@@ -63,14 +63,24 @@ for (const line of lines) {
         <time datetime={post.data.pubDate.toISOString()}>{format(post.data.pubDate, 'MMM d, yyyy')}</time>
       </div>
 
-      {post.data.showToc && headers.length > 0 && (
+      {post.data.headerImage && (
+        <div>
+          <img
+            src={post.data.headerImage}
+            alt={post.data.title}
+            class="w-full max-w-md mx-auto rounded-lg"
+          />
+        </div>
+      )}
+
+      {post.data.showToc && headers.length > 0 && !post.data.headerImage && (
         <div class="bg-gray-50 rounded-lg p-6 mb-8">
           <h2 class="text-lg font-semibold mb-2">Table of Contents</h2>
           <nav>
             <ul class="space-y-2">
               {headers.map(header => (
                 <li>
-                  <a 
+                  <a
                     href={`#${header.id}`}
                     class="text-gray-600 hover:text-gray-900 hover:underline inline-flex items-center group"
                   >

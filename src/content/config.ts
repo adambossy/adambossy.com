@@ -11,6 +11,7 @@ const blogCollection = defineCollection({
     author: z.string(),
     showToc: z.boolean().default(false),
     emoji: z.string().optional(),
+    headerImage: z.string().optional(),
   }),
 });
 
