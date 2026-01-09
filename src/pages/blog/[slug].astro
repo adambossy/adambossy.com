@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { format } from 'date-fns';
+import { formatDateUTC } from '../../utils/date';
 import { marked } from 'marked';
 import { getCollection } from 'astro:content';
 
@@ -60,7 +60,7 @@ for (const line of lines) {
       <div class="flex items-center text-gray-600 mb-8">
         <span>{post.data.author}</span>
         <span class="mx-2">·</span>
-        <time datetime={post.data.pubDate.toISOString()}>{format(post.data.pubDate, 'MMM d, yyyy')}</time>
+        <time datetime={post.data.pubDate.toISOString()}>{formatDateUTC(post.data.pubDate)}</time>
       </div>
 
       {post.data.headerImage && (
